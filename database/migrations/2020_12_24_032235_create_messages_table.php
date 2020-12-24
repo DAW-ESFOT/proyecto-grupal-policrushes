@@ -16,6 +16,9 @@ class CreateMessagesTable extends Migration
         Schema::create('messages', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+            $table->timestamp('date')->nullable();
+            $table->boolean('seen')->nullable();
+            $table->text('content')->nullable();
         });
     }
 
