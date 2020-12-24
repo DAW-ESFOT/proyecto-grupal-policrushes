@@ -27,7 +27,9 @@ class User extends Authenticatable
         'location',
         'address',
         'min_age',
-        'max_age'
+        'max_age',
+        'preferred_gender',
+        'preferred_pet',
     ];
 
     /**

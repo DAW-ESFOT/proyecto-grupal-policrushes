@@ -29,6 +29,8 @@ class CreateUsersTable extends Migration
             $table->text('address')->nullable();
             $table->integer('min_age')->nullable();
             $table->integer('max_age')->nullable();
+            $table->text('preferred_gender')->nullable();
+            $table->text('preferred_pet')->nullable();
         });
     }
 
