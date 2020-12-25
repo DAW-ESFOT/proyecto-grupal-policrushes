@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
+use App\Models\User;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -17,3 +17,10 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+//business
+Route::get('users', 'UserController@index'); 
+Route::get('users/{article}', 'UserController@show'); 
+Route::post('users', 'UserController@store');
+Route::put('users/{article}', 'UserController@update'); 
+Route::delete('users/{article}', 'UserController@delete');
