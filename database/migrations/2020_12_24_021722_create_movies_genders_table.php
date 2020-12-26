@@ -13,7 +13,7 @@ class CreateMoviesGendersTable extends Migration
      */
     public function up()
     {
-        Schema::create('movies_genders', function (Blueprint $table) {
+        Schema::create('movie_genders', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
             $table->text('name')->nullable();
@@ -27,6 +27,6 @@ class CreateMoviesGendersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('movies_genders');
+        Schema::dropIfExists('movie_genders');
     }
 }
