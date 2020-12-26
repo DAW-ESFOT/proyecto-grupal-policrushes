@@ -23,3 +23,39 @@ Route::get('users/{user}', 'App\Http\Controllers\UserController@show');
 Route::post('users', 'App\Http\Controllers\UserController@store');
 Route::put('users/{user}', 'App\Http\Controllers\UserController@update'); 
 Route::delete('users/{user}', 'App\Http\Controllers\UserController@delete');
+
+Route::get('movie-genders', 'App\Http\Controllers\MovieGenderController@index'); 
+Route::get('movie-genders/{gender}', 'App\Http\Controllers\MovieGenderController@show'); 
+Route::post('movie-genders', 'App\Http\Controllers\MovieGenderController@store');
+Route::put('movie-genders/{gender}', 'App\Http\Controllers\MovieGenderController@update'); 
+Route::delete('movie-genders/{gender}', 'App\Http\Controllers\MovieGenderController@delete');
+
+Route::get('music-genders', 'App\Http\Controllers\MusicGenderController@index'); 
+Route::get('music-genders/{gender}', 'App\Http\Controllers\MusicGenderController@show'); 
+Route::post('music-genders', 'App\Http\Controllers\MusicGenderController@store');
+Route::put('music-genders/{gender}', 'App\Http\Controllers\MusicGenderController@update'); 
+Route::delete('music-genders/{gender}', 'App\Http\Controllers\MusicGenderController@delete');
+
+Route::get('matches', 'App\Http\Controllers\MatchController@index'); 
+Route::get('matches/{match}', 'App\Http\Controllers\MatchController@show'); 
+Route::post('matches', 'App\Http\Controllers\MatchController@store');
+Route::put('matches/{match}', 'App\Http\Controllers\MatchController@update'); 
+Route::delete('matches/{match}', 'App\Http\Controllers\MatchController@delete');
+
+Route::get('messages', 'App\Http\Controllers\MessageController@index'); 
+Route::get('messages/{message}', 'App\Http\Controllers\MessageController@show'); 
+Route::post('messages', 'App\Http\Controllers\MessageController@store');
+Route::put('messages/{message}', 'App\Http\Controllers\MessageController@update'); 
+Route::delete('messages/{message}', 'App\Http\Controllers\MessageController@delete');
+
+Route::get('chats', 'App\Http\Controllers\ChatController@index'); 
+Route::get('chats/{chat}', 'App\Http\Controllers\ChatController@show'); 
+Route::post('chats', 'App\Http\Controllers\ChatController@store');
+Route::put('chats/{chat}', 'App\Http\Controllers\ChatController@update'); 
+Route::delete('chats/{chat}', 'App\Http\Controllers\ChatController@delete');
+
+Route::get('favorites', 'App\Http\Controllers\FavoriteController@index'); 
+Route::get('favorites/{favorite}', 'App\Http\Controllers\FavoriteController@show'); 
+Route::post('favorites', 'App\Http\Controllers\FavoriteController@store');
+Route::put('favorites/{favorite}', 'App\Http\Controllers\FavoriteController@update'); 
+Route::delete('favorites/{favorite}', 'App\Http\Controllers\FavoriteController@delete');
