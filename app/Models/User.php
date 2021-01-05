@@ -50,4 +50,25 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function movies (){
+        return $this->hasMany('App\Models\MovieGender');
+    }
+
+    public function music (){
+        return $this->hasMany('App\Models\MusicGender');
+    }
+
+    public function chat (){
+        return $this->hasMany('App\Models\Chat');
+    }
+
+    public function match (){
+        return $this->hasMany('App\Models\Match');
+    }
+
+    public function favorite (){
+        return $this->hasMany('App\Models\Favorite');
+    }
+
 }
