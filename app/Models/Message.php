@@ -13,4 +13,8 @@ class Message extends Model
         'seen',
         'content',
     ];
+
+    public function chat (){
+        return $this->belongsToMany('App\Models\Chat');
+    }
 }
