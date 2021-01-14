@@ -18,12 +18,19 @@ class MovieGenderTableSeeder extends Seeder
             "terror",
             "romance",
             "acción",
+            "comedia"
         ];
         // Vaciar la tabla.
         MovieGender::truncate();
         $faker = \Faker\Factory::create();
         // Crear artículos ficticios en la tabla 
-
+        /*
+        for ($i = 0; $i < 3; $i++) {
+            MovieGender::create([
+                'name' => $faker->word
+            ]);
+        }*/
+        
         foreach ($genders as &$gender) {
             MovieGender::create(['name' => $gender,]);
         }

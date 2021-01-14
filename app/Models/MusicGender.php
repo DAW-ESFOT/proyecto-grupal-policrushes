@@ -11,6 +11,6 @@ class MusicGender extends Model
     protected $fillable = ['name'];
 
     public function user (){
-        return $this->belongsToMany('App\Models\User');
+        return $this->belongsToMany('App\Models\User', 'music_user')->withTimestamps();
     }
 }

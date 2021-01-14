@@ -18,13 +18,18 @@ class MusicGenderTableSeeder extends Seeder
             "rock",
             "urbano",
             "punk",
-            "narcocorridos",
-            "infantiles",
+            "electronica",
         ];
         // Vaciar la tabla.
         MusicGender::truncate();
         $faker = \Faker\Factory::create();
         // Crear artículos ficticios en la tabla 
+        /*
+        for ($i = 0; $i < 3; $i++) {
+            MusicGender::create([
+                'name' => $faker->word
+            ]);
+        }*/
 
         foreach ($genders as &$gender) {
             MusicGender::create(['name' => $gender,]);
