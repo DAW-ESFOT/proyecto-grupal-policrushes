@@ -9,7 +9,7 @@ class Favorite extends Model
 {
     use HasFactory;
 
-    public function user (){
-        return $this->belongsToMany('App\Models\User');
+    public function user(){
+        return $this->belongsTo('App\Models\User');
     }
 }
