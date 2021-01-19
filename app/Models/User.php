@@ -54,11 +54,11 @@ class User extends Authenticatable implements JWTSubject
     ];
 
     public function movies (){
-        return $this->hasMany('App\Models\MovieGender');
+        return $this->belongsToMany('App\Models\MovieGender')->withTimestamps();
     }
 
     public function music (){
-        return $this->hasMany('App\Models\MusicGender');
+        return $this->belongsToMany('App\Models\MusicGender')->withTimestamps();
     }
 
     public function chat (){

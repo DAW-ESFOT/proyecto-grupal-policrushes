@@ -18,6 +18,14 @@ class CreateMoviesGendersTable extends Migration
             $table->timestamps();
             $table->text('name')->nullable();
         });
+
+        Schema::create('movie_user', function (Blueprint $table) {
+            $table->unsignedBigInteger('movie_gender_id');
+            $table->foreign('movie_gender_id')->references('id')->on('movie_genders')->onDelete('restrict');
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('restrict');
+            $table->timestamps();
+        });
     }
 
     /**
@@ -27,6 +35,9 @@ class CreateMoviesGendersTable extends Migration
      */
     public function down()
     {
+        Schema::disableForeignKeyConstraints();
+        Schema::dropIfExists('movie_user');
         Schema::dropIfExists('movie_genders');
+        Schema::enableForeignKeyConstraints();
     }
 }

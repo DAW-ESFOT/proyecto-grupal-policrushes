@@ -18,6 +18,14 @@ class CreateMusicGendersTable extends Migration
             $table->timestamps();
             $table->text('name')->nullable();
         });
+
+        Schema::create('music_user', function (Blueprint $table) {
+            $table->unsignedBigInteger('music_gender_id');
+            $table->foreign('music_gender_id')->references('id')->on('music_genders')->onDelete('restrict');
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('restrict');
+            $table->timestamps();
+        });
     }
 
     /**
@@ -27,6 +35,9 @@ class CreateMusicGendersTable extends Migration
      */
     public function down()
     {
+        Schema::disableForeignKeyConstraints();
+        Schema::dropIfExists('music_user');
         Schema::dropIfExists('music_genders');
+        Schema::enableForeignKeyConstraints();
     }
 }
