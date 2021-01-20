@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Chat;
+use App\Http\Resources\Chat as ResourceChat;
 
 class ChatController extends Controller
 {
