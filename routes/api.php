@@ -26,6 +26,8 @@ Route::group(['middleware' => ['jwt.verify']], function () {
     Route::get('user', 'App\Http\Controllers\UserController@getAuthenticatedUser');
     Route::get('movie-genders', 'App\Http\Controllers\MovieGenderController@index');
     Route::get('movie-genders/{gender}', 'App\Http\Controllers\MovieGenderController@show');
+    Route::get('user/{user}/image', 'App\Http\Controllers\UserController@image');
+
     Route::post('movie-genders', 'App\Http\Controllers\MovieGenderController@store');
     Route::put('movie-genders/{gender}', 'App\Http\Controllers\MovieGenderController@update');
     Route::delete('movie-genders/{gender}', 'App\Http\Controllers\MovieGenderController@delete');
