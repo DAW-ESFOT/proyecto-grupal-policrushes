@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Http\Resources\User as UserResuce;
+use App\Http\Resources\UserCollection; 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -11,6 +13,22 @@ use Tymon\JWTAuth\Exceptions\JWTException;
 
 class UserController extends Controller
 {
+    public function index(){
+        return new UserCollection(User::paginate(10));
+    }
+    public function show( User $user){
+        return response()->json(new UserResuce($user),200);
+    }
+    
+    /*public function update(Request $request, User $user){
+        $user->update($request->all());
+        return response()->json($user, 200);
+    }*/
+    /*public function delete(User $user){
+        $user->delete();
+        return response()->json(null, 204);
+    }*/
+
     public function authenticate(Request $request)
     {
         $credentials = $request->only('email', 'password');
@@ -27,8 +45,17 @@ class UserController extends Controller
     public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
+            'name' => 'required|string|max:50',
+            'age' => 'required|int|min:18|max:40',
+            'gender' => 'required|string|max:1',
+            'min_age' => 'required|int|min:18',
+            'max_age' => 'required|int|min:18|max:40',
+            'preferred_gender' => 'required|string|max:1',
+            'preferred_pet' => 'string',
+            'address' => 'string',
+            'location' => 'required|point',
+            'description' => 'required|string|max:225',
+            'email' => 'required|string|email|max:100|unique:users',
             'password' => 'required|string|min:6|confirmed',
         ]);
 

@@ -17,6 +17,10 @@ class MatchController extends Controller
     }
     public function store(Request $request)
     {
+        $validatedData = $request->validate([
+            'date' => 'timestamp',
+            'content' => 'required|string|max:255',
+        ]);
         $match = Match::create($request->all());
         return response()->json($match, 201);
     }
