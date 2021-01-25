@@ -25,6 +25,8 @@ class User extends JsonResource
             'address' => $this->address,
             'min_age' => $this->min_age,
             'max_age' => $this->max_age,
+            'movie_gender' =>"/api/movie-genders/".$this->id."/movie-genders",
+            'music_gender' =>"/api/music-genders/".$this->id."/music-genders",
             'preferred_gender' => $this->preferred_gender,
             'preferred_pet' => $this->preferred_pet,
             'created_at' => $this->created_at,

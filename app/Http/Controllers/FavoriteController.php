@@ -4,16 +4,25 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Favorite;
+use App\Models\User;
+use App\Http\Resources\Favorite as FavoriteResource;
 
 class FavoriteController extends Controller
 {
-    public function index()
+    /**
+     * Display a listing of the resource.
+     *
+     * @param User $user
+     * @return void
+     */
+    public function index(User $user)
     {
-        return Favorite::all();
+        return response()->json(FavoriteResource::collection($user->favorites->sortByDesc('created_at')), 200);
     }
-    public function show(Favorite $favorite)
+    public function show(Favorite $favorite, User $user)
     {
-        return $favorite;
+        $favorite = $user->comments()->where('id', $favorite->id)->firstOrFail();
+        return response()->json(new FavoriteResource($favorite), 200);
     }
     public function store(Request $request)
     {

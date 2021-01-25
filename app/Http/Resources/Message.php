@@ -20,8 +20,8 @@ class Message extends JsonResource
             'chat_id' => $this->chat_id,
             'seen' => $this->seen,
             'content' => $this->content,
-            'user1_id' => $this->user1_id,
-            'user2_id' => $this->user2_id,
+            'user1' =>"/api/user/".$this->id."/users",
+            'user2' =>"/api/user/".$this->id."/users",
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
