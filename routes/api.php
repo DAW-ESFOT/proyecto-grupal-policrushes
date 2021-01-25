@@ -23,42 +23,46 @@ Route::post('register', 'App\Http\Controllers\UserController@register');
 Route::post('login', 'App\Http\Controllers\UserController@authenticate');
 
 Route::group(['middleware' => ['jwt.verify']], function () {
-    Route::get('user', 'App\Http\Controllers\UserController@getAuthenticatedUser');
-    Route::get('movie-genders', 'App\Http\Controllers\MovieGenderController@index');
-    Route::get('movie-genders/{gender}', 'App\Http\Controllers\MovieGenderController@show');
-    Route::post('movie-genders', 'App\Http\Controllers\MovieGenderController@store');
-    Route::put('movie-genders/{gender}', 'App\Http\Controllers\MovieGenderController@update');
-    Route::delete('movie-genders/{gender}', 'App\Http\Controllers\MovieGenderController@delete');
 
-    Route::get('music-genders', 'App\Http\Controllers\MusicGenderController@index');
-    Route::get('music-genders/{gender}', 'App\Http\Controllers\MusicGenderController@show');
-    Route::post('music-genders', 'App\Http\Controllers\MusicGenderController@store');
-    Route::put('music-genders/{gender}', 'App\Http\Controllers\MusicGenderController@update');
-    Route::delete('music-genders/{gender}', 'App\Http\Controllers\MusicGenderController@delete');
+    Route::get('miuser', 'App\Http\Controllers\UserController@getAuthenticatedUser');
+    Route::get('user', 'App\Http\Controllers\UserController@index');
+    Route::get('user/{user}', 'App\Http\Controllers\UserController@show');
 
-    Route::get('matches', 'App\Http\Controllers\MatchController@index');
-    Route::get('matches/{match}', 'App\Http\Controllers\MatchController@show');
-    Route::post('matches', 'App\Http\Controllers\MatchController@store');
-    Route::put('matches/{match}', 'App\Http\Controllers\MatchController@update');
-    Route::delete('matches/{match}', 'App\Http\Controllers\MatchController@delete');
+    Route::get('user/{user}/movie-genders', 'App\Http\Controllers\MovieGenderController@index');
+    Route::get('user/{user}/movie-genders/{gender}', 'App\Http\Controllers\MovieGenderController@show');
+    Route::post('user/{user}/movie-genders', 'App\Http\Controllers\MovieGenderController@store');
+    Route::put('user/{user}/movie-genders/{gender}', 'App\Http\Controllers\MovieGenderController@update');
+    Route::delete('user/{user}/movie-genders/{gender}', 'App\Http\Controllers\MovieGenderController@delete');
 
-    Route::get('messages', 'App\Http\Controllers\MessageController@index');
-    Route::get('messages/{message}', 'App\Http\Controllers\MessageController@show');
-    Route::post('messages', 'App\Http\Controllers\MessageController@store');
-    Route::put('messages/{message}', 'App\Http\Controllers\MessageController@update');
-    Route::delete('messages/{message}', 'App\Http\Controllers\MessageController@delete');
+    Route::get('user/{user}/music-genders', 'App\Http\Controllers\MusicGenderController@index');
+    Route::get('user/{user}/music-genders/{gender}', 'App\Http\Controllers\MusicGenderController@show');
+    Route::post('user/{user}/music-genders', 'App\Http\Controllers\MusicGenderController@store');
+    Route::put('user/{user}/music-genders/{gender}', 'App\Http\Controllers\MusicGenderController@update');
+    Route::delete('user/{user}/music-genders/{gender}', 'App\Http\Controllers\MusicGenderController@delete');
 
-    Route::get('chats', 'App\Http\Controllers\ChatController@index');
-    Route::get('chats/{chat}', 'App\Http\Controllers\ChatController@show');
-    Route::post('chats', 'App\Http\Controllers\ChatController@store');
-    Route::put('chats/{chat}', 'App\Http\Controllers\ChatController@update');
-    Route::delete('chats/{chat}', 'App\Http\Controllers\ChatController@delete');
+    Route::get('miuser/matches', 'App\Http\Controllers\MatchController@index');
+    Route::get('miuser/matches/{match}', 'App\Http\Controllers\MatchController@show');
+    Route::post('miuser/matches', 'App\Http\Controllers\MatchController@store');
+    Route::put('miuser/matches/{match}', 'App\Http\Controllers\MatchController@update');
+    Route::delete('miuser/matches/{match}', 'App\Http\Controllers\MatchController@delete');
 
-    Route::get('favorites', 'App\Http\Controllers\FavoriteController@index');
-    Route::get('favorites/{favorite}', 'App\Http\Controllers\FavoriteController@show');
-    Route::post('favorites', 'App\Http\Controllers\FavoriteController@store');
-    Route::put('favorites/{favorite}', 'App\Http\Controllers\FavoriteController@update');
-    Route::delete('favorites/{favorite}', 'App\Http\Controllers\FavoriteController@delete');
+    Route::get('miuser/chats/{chat}/messages', 'App\Http\Controllers\MessageController@index');
+    Route::get('miuser/chats/{chat}/messages/{message}', 'App\Http\Controllers\MessageController@show');
+    Route::post('miuser/chats/{chat}/messages', 'App\Http\Controllers\MessageController@store');
+    Route::put('miuser/miuser/chats/{chat}/messages/{message}', 'App\Http\Controllers\MessageController@update');
+    Route::delete('miuser/miuser/chats/{chat}/messages/{message}', 'App\Http\Controllers\MessageController@delete');
+
+    Route::get('miuser/chats', 'App\Http\Controllers\ChatController@index');
+    Route::get('miuser/chats/{chat}', 'App\Http\Controllers\ChatController@show');
+    Route::post('miuser/chats', 'App\Http\Controllers\ChatController@store');
+    Route::put('miuser/chats/{chat}', 'App\Http\Controllers\ChatController@update');
+    Route::delete('miuser/chats/{chat}', 'App\Http\Controllers\ChatController@delete');
+
+    Route::get('miuser/favorites', 'App\Http\Controllers\FavoriteController@index');
+    Route::get('miuser/favorites/{favorite}', 'App\Http\Controllers\FavoriteController@show');
+    Route::post('miuser/favorites', 'App\Http\Controllers\FavoriteController@store');
+    Route::put('miuser/favorites/{favorite}', 'App\Http\Controllers\FavoriteController@update');
+    Route::delete('miuser/favorites/{favorite}', 'App\Http\Controllers\FavoriteController@delete');
 });
 
 

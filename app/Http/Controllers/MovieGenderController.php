@@ -4,21 +4,37 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\MovieGender;
+use App\Http\Resources\MovieGender as MovieResource;
+use App\Models\User;
 
 class MovieGenderController extends Controller
 {
-    public function index()
+    /**
+     * Display a listing of the resource.
+     *
+     * @param User $user
+     * @return void
+     */
+    public function index(User $user)
     {
-        return MovieGender::all();
+        return response()->json(MovieResource::collection($user->movie_genders->sortByDesc('created_at')), 200);
+        //return MovieGender::all();
     }
-    public function show(MovieGender $gender)
+    public function show(User $user, MovieGender $gender)
     {
-        return $gender;
+        $gender = $user->comments()->where('id', $gender->id)->firstOrFail();
+        return response()->json(new MovieResource($gender), 200);
     }
-    public function store(Request $request)
+    public function store(Request $request, User $user)
     {
-        $gender = MovieGender::create($request->all());
-        return response()->json($gender, 201);
+        $request->validate([
+            'name' => 'required|string'
+        ]);
+
+        $gender = $user->comments()->save(new MovieGender($request->all()));
+        return response()->json(new MovieResource($gender), 201);
+        //$gender = MovieGender::create($request->all());
+        //return response()->json($gender, 201);
     }
     public function update(Request $request, MovieGender $gender)
     {
