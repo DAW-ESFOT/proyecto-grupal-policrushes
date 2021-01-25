@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 
-use App\Models\Match;
+use App\Models\Message;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class MatchPolicy
+class MessagePolicy
 {
     use HandlesAuthorization;
 
@@ -32,10 +32,10 @@ class MatchPolicy
      * Determine whether the user can view the model.
      *
      * @param \App\Models\User $user
-     * @param \App\Models\Match $match
+     * @param \App\Models\Message $message
      * @return mixed
      */
-    public function view(User $user, Match $match)
+    public function view(User $user, Message $message)
     {
         return $user->isGranted(User::ROLE_USER);
     }
@@ -55,22 +55,22 @@ class MatchPolicy
      * Determine whether the user can update the model.
      *
      * @param \App\Models\User $user
-     * @param \App\Models\Match $match
+     * @param \App\Models\Message $message
      * @return mixed
      */
-    public function update(User $user, Match $match)
+    public function update(User $user, Message $message)
     {
-        return $user->isGranted(User::ROLE_USER) && $user->id === $match->user_id;
+        return $user->isGranted(User::ROLE_USER) && $user->id === $message->user_id;
     }
 
     /**
      * Determine whether the user can delete the model.
      *
      * @param \App\Models\User $user
-     * @param \App\Models\Match $match
+     * @param \App\Models\Message $message
      * @return mixed
      */
-    public function delete(User $user, Match $match)
+    public function delete(User $user, Message $message)
     {
         return $user->isGranted(User::ROLE_USER);
     }
@@ -79,10 +79,10 @@ class MatchPolicy
      * Determine whether the user can restore the model.
      *
      * @param \App\Models\User $user
-     * @param \App\Models\Match $match
+     * @param \App\Models\Message $message
      * @return mixed
      */
-    public function restore(User $user, Match $match)
+    public function restore(User $user, Message $message)
     {
         //
     }
@@ -91,10 +91,10 @@ class MatchPolicy
      * Determine whether the user can permanently delete the model.
      *
      * @param \App\Models\User $user
-     * @param \App\Models\Match $match
+     * @param \App\Models\Message $message
      * @return mixed
      */
-    public function forceDelete(User $user, Match $match)
+    public function forceDelete(User $user, Message $message)
     {
         //
     }

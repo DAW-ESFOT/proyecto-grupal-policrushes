@@ -31,6 +31,7 @@ class FavoriteController extends Controller
     }
     public function delete(Favorite $favorite)
     {
+        $this->authorize('delete', $favorite);
         $favorite->delete();
         return response()->json(null, 204);
     }

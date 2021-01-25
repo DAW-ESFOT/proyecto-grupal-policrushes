@@ -31,6 +31,7 @@ class MovieGenderController extends Controller
     }
     public function delete(MovieGender $gender)
     {
+        $this->authorize('delete', $gender);
         $gender->delete();
         return response()->json(null, 204);
     }

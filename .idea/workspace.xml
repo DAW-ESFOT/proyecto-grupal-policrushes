@@ -6,10 +6,19 @@
   <component name="ChangeListManager">
     <list default="true" id="8bdfa307-2ebc-4fc0-80ee-b29702018a59" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/ChatController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/ChatController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/FavoriteController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/FavoriteController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/MatchController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/MatchController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/MessageController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/MessageController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/MovieGenderController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/MovieGenderController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/MusicGenderController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/MusicGenderController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Models/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/User.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Policies/FavoritePolicy.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Policies/FavoritePolicy.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Policies/MatchPolicy.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Policies/MatchPolicy.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Policies/MovieGenderPolicy.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Policies/MovieGenderPolicy.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Policies/MusicGenderPolicy.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Policies/MusicGenderPolicy.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2021_01_20_225925_add_role_column_user.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2021_01_20_225925_add_role_column_user.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/api.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -146,7 +155,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../blog" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
     <property name="node.js.path.for.package.tslint" value="project" />
@@ -172,7 +181,9 @@
       <workItem from="1608764568629" duration="838000" />
       <workItem from="1609809005327" duration="6914000" />
       <workItem from="1609822769570" duration="1137000" />
-      <workItem from="1611176982105" duration="9159000" />
+      <workItem from="1611176982105" duration="10548000" />
+      <workItem from="1611341781637" duration="280000" />
+      <workItem from="1611599028404" duration="5416000" />
     </task>
     <servers />
   </component>
@@ -189,5 +200,6 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
 </project>

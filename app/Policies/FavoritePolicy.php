@@ -10,7 +10,7 @@ class FavoritePolicy
 {
     use HandlesAuthorization;
 
-    public function before($user, $ability)
+    public function before(User $user, $ability)
     {
         if ($user->isGranted(User::ROLE_SUPERADMIN)) {
             return true;
@@ -72,7 +72,7 @@ class FavoritePolicy
      */
     public function delete(User $user, Favorite $favorite)
     {
-        return $user->isGranted(User::ROLE_ADMIN);
+        return $user->isGranted(User::ROLE_USER);
     }
 
     /**

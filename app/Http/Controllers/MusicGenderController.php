@@ -31,6 +31,7 @@ class MusicGenderController extends Controller
     }
     public function delete(MusicGender $gender)
     {
+        $this->authorize('delete', $gender);
         $gender->delete();
         return response()->json(null, 204);
     }
