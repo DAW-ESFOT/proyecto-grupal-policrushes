@@ -33,6 +33,7 @@ class UserTableSeder extends Seeder
 
             'password' => $password,
         ]);
+
         // Generar algunos usuarios para nuestra aplicacion for ($i = 0; $i < 10; $i++) {
         for ($i = 0; $i < 10; $i++) {
             $user = User::create([
@@ -42,7 +43,7 @@ class UserTableSeder extends Seeder
                 'password' => $password,
             ]);
 
-            $user->music()->saveMany(
+            /*$user->music()->saveMany(
                 $faker->randomElements(
                     array(
                         MusicGender::find(1),
@@ -57,7 +58,7 @@ class UserTableSeder extends Seeder
                         MovieGender::find(4),
                     ),$faker->numberBetween(1, 3), false),
             );
-    /*
+
             $user->movie()->saveMany(
                 array(
                         MovieGender::find(1),

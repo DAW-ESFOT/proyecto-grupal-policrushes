@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Message;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Schema;
 
@@ -14,10 +15,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        Schema::disableForeignKeyConstraints();  
+        Schema::disableForeignKeyConstraints();
+        $this->call(UserTableSeder::class);
+        $this->call(ChatTableSeeder::class);
+        $this->call(MessageTableSeeder::class);
         $this->call(MovieGenderTableSeeder::class);
         $this->call(MusicGenderTableSeeder::class);
-        $this->call(UserTableSeder::class);
         Schema::enableForeignKeyConstraints();
     }
 }
