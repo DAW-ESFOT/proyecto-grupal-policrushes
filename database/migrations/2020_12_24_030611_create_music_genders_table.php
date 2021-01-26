@@ -24,7 +24,6 @@ class CreateMusicGendersTable extends Migration
             $table->foreign('music_gender_id')->references('id')->on('music_genders')->onDelete('restrict');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('restrict');
-            $table->timestamps();
         });
     }
 

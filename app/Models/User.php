@@ -31,7 +31,8 @@ class User extends Authenticatable implements JWTSubject
         'max_age',
         'preferred_gender',
         'preferred_pet',
-        'movies'
+        'movies',
+        'image'
     ];
     const ROLE_SUPERADMIN = 'ROLE_SUPERADMIN';
     const ROLE_ADMIN = 'ROLE_ADMIN';
