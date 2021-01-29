@@ -2,26 +2,40 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\FavoriteCollection;
+use App\Mail\NewFavorite;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\Favorite;
+use Illuminate\Support\Facades\Mail;
+use App\Http\Resources\Favorite as FavoriteResource;
 
 class FavoriteController extends Controller
 {
-    public function index()
+    public function index(Favorite $favorite)
     {
         $this->authorize('viewAny', Favorite::class);
-        return Favorite::all();
+        $user = Auth::user();
+        $favorites = $user->favorite1->merge($user->favorite2);
+        return response()->json(new FavoriteCollection($favorites));
     }
-    public function show(Favorite $favorite)
+    public function show(User $user, Favorite $favorite)
     {
-        $this->authorize('view', $favorite);
-        return $favorite;
+        $favorite = $user->favorites1()->where('id', $favorite->id)->firstOrFail();
+        $favorite = $user->favorites2()->where('id', $favorite->id)->firstOrFail();
+
+        return response()->json(new FavoriteResource($favorite), 200);
     }
     public function store(Request $request)
     {
         $this->authorize('create', Favorite::class);
+
         $favorite = Favorite::create($request->all());
-        return response()->json($favorite, 201);
+
+        Mail::to($favorite->user2->email)->send(new NewFavorite($favorite));
+
+
+        return response()->json(new FavoriteResource($favorite), 201);
     }
     public function update(Request $request, Favorite $favorite)
     {

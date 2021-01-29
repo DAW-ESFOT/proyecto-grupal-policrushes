@@ -12,7 +12,7 @@ class ChatPolicy
 
     public function before(User $user, $ability)
     {
-        if ($user->isGranted(User::ROLE_SUPERADMIN)) {
+        if ($user->isGranted(User::ROLE_USER)) {
             return true;
         }
     }

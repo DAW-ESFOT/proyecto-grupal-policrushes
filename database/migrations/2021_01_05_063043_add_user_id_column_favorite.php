@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddUserIdColumnFavorit extends Migration
+class AddUserIdColumnFavorite extends Migration
 {
     /**
      * Run the migrations.
@@ -16,8 +16,8 @@ class AddUserIdColumnFavorit extends Migration
         Schema::table('favorites', function (Blueprint $table) {
             $table->unsignedBigInteger('user1_id');
             $table->foreign('user1_id')->references('id')->on('users')->onDelete('restrict');
-            $table->unsignedBigInteger('user2_id');
-            $table->foreign('user2_id')->references('id')->on('users')->onDelete('restrict');
+            $table->unsignedBigInteger('user2_id')->unique();
+            $table->foreign('user2_id')->references('id')->on('users')->onDelete('restrict')->unique();
         });
     }
 

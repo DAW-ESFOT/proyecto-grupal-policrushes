@@ -62,6 +62,15 @@ class User extends Authenticatable implements JWTSubject
         'email_verified_at' => 'datetime',
     ];
 
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }
     public function movies()
     {
         return $this->belongsToMany('App\Models\MovieGender', 'movie_genders')->withTimestamps();
@@ -82,29 +91,19 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany('App\Models\Match');
     }
 
-    public function favorite()
-    {
-        return $this->hasMany('App\Models\Favorite');
-    }
-
-    public function getJWTIdentifier()
-    {
-        return $this->getKey();
-    }
-
-    public function getJWTCustomClaims()
-    {
-        return [];
-    }
 
     public function chats()
     {
         return $this->hasMany('App\Models\Chat');
     }
 
-    public function favorites()
+    public function favorites1()
     {
-        return $this->hasMany('App\Models\Favorite');
+        return $this->hasMany('App\Models\Favorite', 'user1_id');
+    }
+    public function favorites2()
+    {
+        return $this->hasMany('App\Models\Favorite', 'user2_id');
     }
 
     public function matchs()

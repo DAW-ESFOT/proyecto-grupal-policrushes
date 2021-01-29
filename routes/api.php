@@ -66,6 +66,7 @@ Route::group(['middleware' => ['jwt.verify']], function () {
 
     //Favorites
     Route::get('favorites', 'App\Http\Controllers\FavoriteController@index');
+    Route::get('favorites/{favorite}/user', 'App\Http\Controllers\FavoriteController@show');
     Route::get('favorites/{favorite}', 'App\Http\Controllers\FavoriteController@show');
     Route::post('favorites', 'App\Http\Controllers\FavoriteController@store');
     Route::put('favorites/{favorite}', 'App\Http\Controllers\FavoriteController@update');
