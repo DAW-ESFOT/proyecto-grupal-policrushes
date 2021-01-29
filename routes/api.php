@@ -26,6 +26,9 @@ Route::post('login', 'App\Http\Controllers\UserController@authenticate');
 
 Route::group(['middleware' => ['jwt.verify']], function () {
     Route::get('user', 'App\Http\Controllers\UserController@getAuthenticatedUser');
+    Route::get('user/matches', 'App\Http\Controllers\UserController@matches');
+    Route::post('user/pick', 'App\Http\Controllers\UserController@pick');
+    Route::get('user/compatibles', 'App\Http\Controllers\UserController@getCompatibles');
 
     //Movie Genders
     Route::get('movie-genders', 'App\Http\Controllers\MovieGenderController@index');
