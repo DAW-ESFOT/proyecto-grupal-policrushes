@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 class Match extends Model
 {
     use HasFactory;
+    public $timestamps = true;
 
     public static function boot()
     {
