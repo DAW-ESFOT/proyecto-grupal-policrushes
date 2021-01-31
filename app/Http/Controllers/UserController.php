@@ -107,12 +107,7 @@ class UserController extends Controller
             ->where('user1_id', $user1_id)
             ->where('user2_id', $user2_id)->exists();
 
-
-        $backward = DB::table('matches')
-            ->where('user1_id', $user2_id)
-            ->where('user2_id', $user1_id)->exists();
-
-        return !($forward and $backward);
+        return $forward;
     }
 
     public function pick(Request $request){
@@ -135,7 +130,7 @@ class UserController extends Controller
 
         $redundancy = $this->matchRedundancy($user_id,$uid);
         if($redundancy){
-            return response()->json(["result"=>"Match already exists"],200);
+            return response()->json(["result"=>"You cant pick the same user 2 times"],200);
         }
         //create match
         $created_at = Carbon::now()->format('Y-m-d H:i:s');
