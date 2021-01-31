@@ -16,8 +16,8 @@ class AddUserIdColumnFavorite extends Migration
         Schema::table('favorites', function (Blueprint $table) {
             $table->unsignedBigInteger('user1_id');
             $table->foreign('user1_id')->references('id')->on('users')->onDelete('restrict');
-            $table->unsignedBigInteger('user2_id')->unique();
-            $table->foreign('user2_id')->references('id')->on('users')->onDelete('restrict')->unique();
+            $table->unsignedBigInteger('user2_id');
+            $table->foreign('user2_id')->references('id')->on('users')->onDelete('restrict');
         });
     }
 
