@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
-use Grimzy\LaravelMysqlSpatial\Types\Point;
 
 
 class UserController extends Controller
@@ -102,58 +101,60 @@ class UserController extends Controller
         return $matches;
     }
 
-    private function matchRedundancy($user1_id,$user2_id){
-        $forward = DB::table('matches')
-            ->where('user1_id', $user1_id)
-            ->where('user2_id', $user2_id)->exists();
-
-
-        $backward = DB::table('matches')
-            ->where('user1_id', $user2_id)
-            ->where('user2_id', $user1_id)->exists();
-
-        return !($forward and $backward);
-    }
-
     public function pick(Request $request){
         $uid = Auth::id();
         //check partner id
-        if(!isset($request["user_id"])){
-            return response()->json(["response:"=>"User id mandatory , please try again"],400);
-        }
+        if(!isset($request["user_id"])) return response()->json(["response:"=>"User id mandatory"],400);
+
         $user_id = $request["user_id"];
 
         //user can't pick himself
-        if($uid == $user_id ){
-            return response()->json(["result"=>"User can't create a match with himself"],400);
-        }
+        if($uid == $user_id ) return response()->json(["result"=>"User can't create a match with himself"],400);
+
         //parter exists in database
         $ok = User::where('id',$user_id )->exists();
         if (!$ok) {
             return response()->json(["result"=>"Selected user does not exist"],400);
         }
 
-        $redundancy = $this->matchRedundancy($user_id,$uid);
-        if($redundancy){
-            return response()->json(["result"=>"Match already exists"],200);
+        //match redundancy check
+        $forwardMatchRef = DB::table('matches')
+            ->where('user1_id', $uid)
+            ->where('user2_id', $user_id);
+
+        $forward = $forwardMatchRef->exists();
+
+        $backwardMatchRef = DB::table('matches')
+            ->where('user1_id', $user_id)
+            ->where('user2_id', $uid);
+
+        $backward = $backwardMatchRef->exists();
+
+        if($forward) return response()->json(["result"=>"You cant pick the same user 2 times"],200);
+
+        //accept match
+        if($backward){
+            $backwardMatch = $backwardMatchRef->get()->first();
+
+            if($backwardMatch->accepted) return response()->json("You cant pick the same user 2 times", 200);
+
+            $backwardMatchRef->update(['accepted' => true]);
+
+            return response()->json("match accepted", 201);
         }
         //create match
         $created_at = Carbon::now()->format('Y-m-d H:i:s');
         $match = [
             'user2_id' => $user_id,
             'user1_id' => $uid,
+            'accepted' => false,
             'created_at' => $created_at,
             'updated_at' => $created_at
         ];
 
         DB::table('matches')->insert($match);
 
-        $resp = [
-            "response:"=>"Match created with",
-            "match:" => $match
-        ];
-
-        return response()->json($resp,200);
+        return response()->json("match created", 201);
     }
 
     public function getCompatibles(){

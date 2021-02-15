@@ -10,6 +10,7 @@ class Match extends Model
 {
     use HasFactory;
     public $timestamps = true;
+    protected $fillable = ['accepted'];
 
     public static function boot()
     {
