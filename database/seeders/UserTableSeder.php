@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\MovieGender;
 use Illuminate\Database\Seeder;
 use App\Models\User;
-use App\Models\MusicGender;
 use Illuminate\Support\Facades\Hash;
+use \Faker\Factory;
+use Illuminate\Support\Facades\DB;
 
 class UserTableSeder extends Seeder
 {
@@ -15,60 +15,34 @@ class UserTableSeder extends Seeder
      *
      * @return void
      */
-    public function run()
-    {
-        // Vaciar la tabla
+    public function run() {
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         User::truncate();
-        $faker = \Faker\Factory::create();
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
-        $image_name = $faker->image('public/storage/images', 400, 300, null, false);
+        $faker = Factory::create();
 
-        // Crear la misma clave para todos los usuarios
-        // conviene hacerlo antes del for para que el seeder // no se vuelva lento.
+        $image_name = $faker->image('public/storage/images', 400, 300, NULL, FALSE);
+
         $password = Hash::make('123123');
-        User::create([
-            'name' => 'Administrador',
-            'email' => 'admin@prueba.com',
-            'image' => 'users/' . $image_name,
 
-            'password' => $password,
-        ]);
+        $pets = array('cats', 'dogs', 'rabbits', 'birds', 'peces');
 
-        // Generar algunos usuarios para nuestra aplicacion for ($i = 0; $i < 10; $i++) {
         for ($i = 0; $i < 10; $i++) {
-            $user = User::create([
-                'name' => $faker->name,
-                'email' => $faker->email,
-                'image'=> $image_name,
-                'password' => $password,
+            User::create([
+                'name'             => $faker->name($i < 5 ? 'male' : 'female'),
+                'email'            => $faker->email,
+                'image'            => $image_name,
+                'password'         => $password,
+                'gender'           => $i < 5 ? 'male' : 'female',
+                'preferred_gender' => $i < 5 ? 'female' : 'male',
+                'age'              => rand(18, 40),
+                'address'          => $faker->name,
+                'min_age'          => rand(18, 23),
+                'max_age'          => rand(23, 40),
+                'location'          => DB::raw("(ST_GeomFromText('POINT(37.774929 -122.419415)'))"),
+                'preferred_pet'    => $pets[array_rand($pets)],
             ]);
-
-            /*$user->music()->saveMany(
-                $faker->randomElements(
-                    array(
-                        MusicGender::find(1),
-                        MusicGender::find(2),
-                        MusicGender::find(3),
-                        MusicGender::find(4),
-                    ),$faker->numberBetween(1, 3), false,
-                    array(
-                        MovieGender::find(1),
-                        MovieGender::find(2),
-                        MovieGender::find(3),
-                        MovieGender::find(4),
-                    ),$faker->numberBetween(1, 3), false),
-            );
-
-            $user->movie()->saveMany(
-                array(
-                        MovieGender::find(1),
-                        MovieGender::find(2),
-                        MovieGender::find(3),
-                        MovieGender::find(4),
-                    ),$faker->numberBetween(1, 3), false)
-                $faker->randomElements(
-
-            );*/
         }
     }
 }

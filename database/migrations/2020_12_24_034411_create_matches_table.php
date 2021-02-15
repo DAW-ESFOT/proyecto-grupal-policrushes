@@ -16,6 +16,7 @@ class CreateMatchesTable extends Migration
         Schema::create('matches', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+            $table->boolean('accepted')->default(false);
         });
     }
 
