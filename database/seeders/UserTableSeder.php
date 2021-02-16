@@ -32,7 +32,7 @@ class UserTableSeder extends Seeder
             User::create([
                 'name'             => $faker->name($i < 5 ? 'male' : 'female'),
                 'email'            => $faker->email,
-                'image'            => $image_name,
+                'image'            => "public/images/$image_name",
                 'password'         => $password,
                 'gender'           => $i < 5 ? 'male' : 'female',
                 'preferred_gender' => $i < 5 ? 'female' : 'male',
@@ -40,7 +40,8 @@ class UserTableSeder extends Seeder
                 'address'          => $faker->name,
                 'min_age'          => rand(18, 23),
                 'max_age'          => rand(23, 40),
-                'location'          => DB::raw("(ST_GeomFromText('POINT(37.774929 -122.419415)'))"),
+                'lng'              => -0.219254,
+                'lat'              => 78.484758,
                 'preferred_pet'    => $pets[array_rand($pets)],
             ]);
         }

@@ -39,12 +39,9 @@ class UserController extends Controller
     }
 
 
-    public function register(Request $request)
-    {
+    public function uploadPhoto(Request $request){
+
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6|confirmed',
             'image' => 'required|image|dimensions:min_width=200,min_height=200',
         ]);
 
@@ -54,11 +51,40 @@ class UserController extends Controller
 
         $path = $request->image->store('public/images');
 
+        DB::table('users')->where('id',Auth::id())->update(['image' => $path]);
+
+        return response()->json("photo uploaded!!", 201);
+    }
+
+    public function register(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:6|confirmed',
+            'preferred_gender' => 'required|string|min:4|max:6',
+            'gender' => 'required|string|min:4|max:6',
+            'age' => 'required|integer',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors()->toJson(), 400);
+        }
+
+
         $user = User::create([
             'name' => $request->get('name'),
             'email' => $request->get('email'),
             'password' => Hash::make($request->get('password')),
-            'image' => $path,
+            'gender' => $request['gender'],
+            'age' => $request['age'],
+            'description' => $request['description'],
+            'preferred_gender' => $request['preferred_gender'],
+            'preferred_pet' => $request['preferred_pet'],
+            'min_age' => $request['min_age'],
+            'max_age' => $request['max_age'],
+            'lat' => $request['lat'],
+            'lng' => $request['lng'],
         ]);
 
         $token = JWTAuth::fromUser($user);
@@ -103,6 +129,8 @@ class UserController extends Controller
 
     public function pick(Request $request){
         $uid = Auth::id();
+
+        if(!isset($uid)) return response()->json(["response:"=>"Couldn't get authenticated user id"],400);
         //check partner id
         if(!isset($request["user_id"])) return response()->json(["response:"=>"User id mandatory"],400);
 
@@ -157,12 +185,34 @@ class UserController extends Controller
         return response()->json("match created", 201);
     }
 
+    private function isCompatible($user,$candidate){
+        $compatibleFields = 0;
+
+        //prevents the app to suggest users from the same gender if the user picked its opposite gender as preferred
+        if($user->gender != $user->preferred_gender && $candidate->gender == $user->gender) return false;
+
+        //preferred gender
+        if($user->preferred_gender == $candidate->gender) $compatibleFields++;
+
+        if($user->preferred_pet == $candidate->preferred_pet) $compatibleFields++;
+
+        return $compatibleFields >= 1;
+    }
     public function getCompatibles(){
 
-        $user = DB::table('users')->where('id', Auth::id())->first();
+        $user = Auth::user();
+        $compatibles = [];
 
-        $userData = DB::table('users')->where('preferred_gender',$user->preferred_gender);
-        $prefered = $userData->preferedGender;
-
+        DB::table('users')->whereBetween('age', [$user->min_age, $user->max_age])
+            ->where('id','!=',Auth::id())
+            ->orderBy('age')
+            ->chunk(10, function($candidates) use (&$user,&$compatibles)
+            {
+                foreach ($candidates as $candidate)
+                {
+                    if ($this->isCompatible($user,$candidate)) $compatibles[] = $candidate;
+                }
+            });
+        return response()->json($compatibles, 201);
     }
 }

@@ -30,6 +30,8 @@ class CreateUsersTable extends Migration
             $table->integer('max_age')->nullable();
             $table->text('preferred_gender')->nullable();
             $table->text('preferred_pet')->nullable();
+            $table->decimal('lng', 11, 8)->nullable();
+            $table->decimal('lat', 11, 8)->nullable();
         });
     }
 
