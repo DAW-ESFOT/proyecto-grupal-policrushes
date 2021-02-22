@@ -9,8 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use \Faker\Factory;
 use Illuminate\Support\Facades\DB;
 
-class UserTableSeder extends Seeder
-{
+class UserTableSeder extends Seeder {
     /**
      * Run the database seeds.
      *
