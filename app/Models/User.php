@@ -64,15 +64,6 @@ class User extends Authenticatable implements JWTSubject
         'email_verified_at' => 'datetime',
     ];
 
-    public function movies()
-    {
-        return $this->belongsToMany('App\Models\MovieGender', 'movie_genders')->withTimestamps();
-    }
-
-    public function music()
-    {
-        return $this->belongsToMany('App\Models\MusicGender', 'music_user')->withTimestamps();
-    }
 
     public function chat()
     {
@@ -114,15 +105,6 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany('App\Models\Match');
     }
 
-    public function music_genders()
-    {
-        return $this->hasMany('App\Models\MusicGender');
-    }
-
-    public function movie_genders()
-    {
-        return $this->hasMany('App\Models\MovieGender');
-    }
 
     public function isGranted($role)
     {
@@ -143,5 +125,14 @@ class User extends Authenticatable implements JWTSubject
             }
         }
         return false;
+    }
+
+    //many to many
+    /**
+     * Get all of the tags for the post.
+     */
+    public function musicGenres()
+    {
+        return $this->morphToMany(Musicable::class, 'musicable');
     }
 }

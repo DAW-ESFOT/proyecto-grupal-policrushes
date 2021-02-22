@@ -19,8 +19,8 @@ class DatabaseSeeder extends Seeder
         $this->call(UserTableSeder::class);
         $this->call(ChatTableSeeder::class);
         $this->call(MessageTableSeeder::class);
-        $this->call(MovieGenderTableSeeder::class);
-        $this->call(MusicGenderTableSeeder::class);
+        $this->call(MovieGenreTableSeeder::class);
+        $this->call(MusicGenreTableSeeder::class);
         Schema::enableForeignKeyConstraints();
     }
 }
