@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\MusicGender;
 use Illuminate\Database\Seeder;
+use App\Models\MovieGender;
 
-class MusicGenderTableSeeder extends Seeder
+class MovieGenreTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,24 +15,24 @@ class MusicGenderTableSeeder extends Seeder
     public function run()
     {
         $genders = [
-            "rock",
-            "urbano",
-            "punk",
-            "electronica",
+            "terror",
+            "romance",
+            "acción",
+            "comedia"
         ];
         // Vaciar la tabla.
-        MusicGender::truncate();
+        MovieGender::truncate();
         $faker = \Faker\Factory::create();
-        // Crear artículos ficticios en la tabla 
+        // Crear artículos ficticios en la tabla
         /*
         for ($i = 0; $i < 3; $i++) {
-            MusicGender::create([
+            MovieGender::create([
                 'name' => $faker->word
             ]);
         }*/
 
         foreach ($genders as &$gender) {
-            MusicGender::create(['name' => $gender,]);
+            MovieGender::create(['name' => $gender,]);
         }
     }
 }

@@ -14,11 +14,9 @@ use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 
 
-class UserController extends Controller
-{
+class UserController extends Controller {
 
-    public function authenticate(Request $request)
-    {
+    public function authenticate(Request $request) {
         $credentials = $request->only('email', 'password');
         try {
             if (!$token = JWTAuth::attempt($credentials)) {
@@ -31,15 +29,14 @@ class UserController extends Controller
     }
 
 
-    public function image(User $user)
-    {
-        $path = Storage::url($user->image);
+    public function image(User $user) {
+        $path        = Storage::url($user->image);
         $public_path = public_path($path);
         return response()->download($public_path, $user->name);
     }
 
 
-    public function uploadPhoto(Request $request){
+    public function uploadPhoto(Request $request) {
 
         $validator = Validator::make($request->all(), [
             'image' => 'required|image|dimensions:min_width=200,min_height=200',
@@ -51,20 +48,19 @@ class UserController extends Controller
 
         $path = $request->image->store('public/images');
 
-        DB::table('users')->where('id',Auth::id())->update(['image' => $path]);
+        DB::table('users')->where('id', Auth::id())->update(['image' => $path]);
 
         return response()->json("photo uploaded!!", 201);
     }
 
-    public function register(Request $request)
-    {
+    public function register(Request $request) {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6|confirmed',
+            'name'             => 'required|string|max:255',
+            'email'            => 'required|string|email|max:255|unique:users',
+            'password'         => 'required|string|min:6|confirmed',
             'preferred_gender' => 'required|string|min:4|max:6',
-            'gender' => 'required|string|min:4|max:6',
-            'age' => 'required|integer',
+            'gender'           => 'required|string|min:4|max:6',
+            'age'              => 'required|integer',
         ]);
 
         if ($validator->fails()) {
@@ -73,18 +69,18 @@ class UserController extends Controller
 
 
         $user = User::create([
-            'name' => $request->get('name'),
-            'email' => $request->get('email'),
-            'password' => Hash::make($request->get('password')),
-            'gender' => $request['gender'],
-            'age' => $request['age'],
-            'description' => $request['description'],
+            'name'             => $request->get('name'),
+            'email'            => $request->get('email'),
+            'password'         => Hash::make($request->get('password')),
+            'gender'           => $request['gender'],
+            'age'              => $request['age'],
+            'description'      => $request['description'],
             'preferred_gender' => $request['preferred_gender'],
-            'preferred_pet' => $request['preferred_pet'],
-            'min_age' => $request['min_age'],
-            'max_age' => $request['max_age'],
-            'lat' => $request['lat'],
-            'lng' => $request['lng'],
+            'preferred_pet'    => $request['preferred_pet'],
+            'min_age'          => $request['min_age'],
+            'max_age'          => $request['max_age'],
+            'lat'              => $request['lat'],
+            'lng'              => $request['lng'],
         ]);
 
         $token = JWTAuth::fromUser($user);
@@ -93,14 +89,11 @@ class UserController extends Controller
     }
 
 
-
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
 
     }
 
-    public function getAuthenticatedUser()
-    {
+    public function getAuthenticatedUser() {
         try {
             if (!$user = JWTAuth::parseToken()->authenticate()) {
                 return response()->json(['user_not_found'], 404);
@@ -115,8 +108,7 @@ class UserController extends Controller
         return response()->json(compact('user'));
     }
 
-    public function show(User $user)
-    {
+    public function show(User $user) {
         return response()->json(new UserResource($user), 200);
     }
 
@@ -127,22 +119,28 @@ class UserController extends Controller
         return $matches;
     }
 
-    public function pick(Request $request){
+    public function pick(Request $request) {
         $uid = Auth::id();
 
-        if(!isset($uid)) return response()->json(["response:"=>"Couldn't get authenticated user id"],400);
+        if (!isset($uid)) {
+            return response()->json(["response:" => "Couldn't get authenticated user id"], 400);
+        }
         //check partner id
-        if(!isset($request["user_id"])) return response()->json(["response:"=>"User id mandatory"],400);
+        if (!isset($request["user_id"])) {
+            return response()->json(["response:" => "User id mandatory"], 400);
+        }
 
         $user_id = $request["user_id"];
 
         //user can't pick himself
-        if($uid == $user_id ) return response()->json(["result"=>"User can't create a match with himself"],400);
+        if ($uid == $user_id) {
+            return response()->json(["result" => "User can't create a match with himself"], 400);
+        }
 
         //parter exists in database
-        $ok = User::where('id',$user_id )->exists();
+        $ok = User::where('id', $user_id)->exists();
         if (!$ok) {
-            return response()->json(["result"=>"Selected user does not exist"],400);
+            return response()->json(["result" => "Selected user does not exist"], 400);
         }
 
         //match redundancy check
@@ -158,24 +156,28 @@ class UserController extends Controller
 
         $backward = $backwardMatchRef->exists();
 
-        if($forward) return response()->json(["result"=>"You cant pick the same user 2 times"],200);
+        if ($forward) {
+            return response()->json(["result" => "You cant pick the same user 2 times"], 200);
+        }
 
         //accept match
-        if($backward){
+        if ($backward) {
             $backwardMatch = $backwardMatchRef->get()->first();
 
-            if($backwardMatch->accepted) return response()->json("You cant pick the same user 2 times", 200);
+            if ($backwardMatch->accepted) {
+                return response()->json("You cant pick the same user 2 times", 200);
+            }
 
-            $backwardMatchRef->update(['accepted' => true]);
+            $backwardMatchRef->update(['accepted' => TRUE]);
 
             return response()->json("match accepted", 201);
         }
         //create match
         $created_at = Carbon::now()->format('Y-m-d H:i:s');
-        $match = [
-            'user2_id' => $user_id,
-            'user1_id' => $uid,
-            'accepted' => false,
+        $match      = [
+            'user2_id'   => $user_id,
+            'user1_id'   => $uid,
+            'accepted'   => FALSE,
             'created_at' => $created_at,
             'updated_at' => $created_at
         ];
@@ -185,32 +187,39 @@ class UserController extends Controller
         return response()->json("match created", 201);
     }
 
-    private function isCompatible($user,$candidate){
+    private function isCompatible($user, $candidate) {
         $compatibleFields = 0;
 
         //prevents the app to suggest users from the same gender if the user picked its opposite gender as preferred
-        if($user->gender != $user->preferred_gender && $candidate->gender == $user->gender) return false;
+        if ($user->gender != $user->preferred_gender && $candidate->gender == $user->gender) {
+            return FALSE;
+        }
 
         //preferred gender
-        if($user->preferred_gender == $candidate->gender) $compatibleFields++;
+        if ($user->preferred_gender == $candidate->gender) {
+            $compatibleFields++;
+        }
 
-        if($user->preferred_pet == $candidate->preferred_pet) $compatibleFields++;
+        if ($user->preferred_pet == $candidate->preferred_pet) {
+            $compatibleFields++;
+        }
 
         return $compatibleFields >= 1;
     }
-    public function getCompatibles(){
 
-        $user = Auth::user();
+    public function getCompatibles() {
+
+        $user        = Auth::user();
         $compatibles = [];
 
         DB::table('users')->whereBetween('age', [$user->min_age, $user->max_age])
-            ->where('id','!=',Auth::id())
+            ->where('id', '!=', Auth::id())
             ->orderBy('age')
-            ->chunk(10, function($candidates) use (&$user,&$compatibles)
-            {
-                foreach ($candidates as $candidate)
-                {
-                    if ($this->isCompatible($user,$candidate)) $compatibles[] = $candidate;
+            ->chunk(10, function ($candidates) use (&$user, &$compatibles) {
+                foreach ($candidates as $candidate) {
+                    if ($this->isCompatible($user, $candidate)) {
+                        $compatibles[] = $candidate;
+                    }
                 }
             });
         return response()->json($compatibles, 201);
