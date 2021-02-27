@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -128,11 +127,18 @@ class User extends Authenticatable implements JWTSubject
     }
 
     //many to many
+
     /**
-     * Get all of the tags for the post.
+     * Get all of the music genres for the user.
      */
-    public function musicGenres()
-    {
-        return $this->morphToMany(Musicable::class, 'musicable');
+    public function musicGenres() {
+        return $this->morphToMany(MusicGenre::class, 'musicable');
+    }
+
+    /**
+     * Get all of movie genres for the user.
+     */
+    public function movieGenres() {
+        return $this->morphToMany(MovieGenre::class, 'movieable');
     }
 }

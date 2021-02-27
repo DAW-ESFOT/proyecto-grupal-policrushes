@@ -83,6 +83,33 @@ class UserController extends Controller {
             'lng'              => $request['lng'],
         ]);
 
+        //attach music genres
+        $user_id = $user->id;
+        $user->musicGenres()->detach(["{$user_id}_1", "{$user_id}_2", "{$user_id}_3"]);
+        $user->musicGenres()->attach([
+            1 => [
+                "user_id"        => $user->id,
+                "musicable_id"   => "{$user->id}_1",
+                "music_genre_id" => 1,
+                "created_at"     => Carbon::now(),
+                "updated_at"     => Carbon::now()
+            ],
+            2 => [
+                "user_id"        => $user->id,
+                "musicable_id"   => "{$user->id}_2",
+                "music_genre_id" => 2,
+                "created_at"     => Carbon::now(),
+                "updated_at"     => Carbon::now()
+            ],
+            3 => [
+                "user_id"        => $user->id,
+                "musicable_id"   => "{$user->id}_3",
+                "music_genre_id" => 3,
+                "created_at"     => Carbon::now(),
+                "updated_at"     => Carbon::now()
+            ]
+        ]);
+
         $token = JWTAuth::fromUser($user);
 
         return response()->json(compact('user', 'token'), 201);
@@ -105,7 +132,24 @@ class UserController extends Controller {
         } catch (Tymon\JWTAuth\Exceptions\JWTException $e) {
             return response()->json(['token_absent'], $e->getStatusCode());
         }
-        return response()->json(compact('user'));
+
+        $userRecord = Auth::user();
+
+        $musicGenresNames = [];
+
+        foreach ($userRecord->musicGenres as $musicGenre) {
+            $musicGenresNames[] = $musicGenre->name;
+        }
+
+        $movieGenresNames = [];
+
+        foreach ($userRecord->movieGenres as $movieGenre) {
+            $movieGenresNames[] = $movieGenre->name;
+        }
+
+        $userRecord = json_decode(json_encode($userRecord), TRUE);
+        $json       = array_merge($userRecord, ["music_genres" => $musicGenresNames], ["movie_genres" => $movieGenresNames]);
+        return response()->json($json);
     }
 
     public function show(User $user) {

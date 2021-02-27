@@ -3,36 +3,31 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\MovieGender;
+use App\Models\MovieGenre;
+use Illuminate\Support\Facades\DB;
 
-class MovieGenreTableSeeder extends Seeder
-{
+class MovieGenreTableSeeder extends Seeder {
     /**
      * Run the database seeds.
      *
      * @return void
      */
-    public function run()
-    {
-        $genders = [
+    public function run() {
+        $genres = [
             "terror",
             "romance",
             "acción",
             "comedia"
         ];
-        // Vaciar la tabla.
-        MovieGender::truncate();
-        $faker = \Faker\Factory::create();
-        // Crear artículos ficticios en la tabla
-        /*
-        for ($i = 0; $i < 3; $i++) {
-            MovieGender::create([
-                'name' => $faker->word
-            ]);
-        }*/
 
-        foreach ($genders as &$gender) {
-            MovieGender::create(['name' => $gender,]);
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        MovieGenre::truncate();
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+
+        $faker = \Faker\Factory::create();
+
+        foreach ($genres as &$genre) {
+            MovieGenre::create(['name' => $genre,]);
         }
     }
 }
