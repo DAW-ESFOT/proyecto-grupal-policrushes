@@ -17,7 +17,7 @@ class MusicGenre extends Model
 
     public function users()
     {
-        return $this->morphedByMany(Musicable::class, 'musicable');
+        return $this->morphedByMany(User::class, 'musicable');
     }
 
 }

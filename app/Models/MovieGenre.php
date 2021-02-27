@@ -16,7 +16,7 @@ class MovieGenre extends Model {
     ];
 
     public function users() {
-        return $this->morphedByMany(Movieable::class, 'movieable');
+        return $this->morphedByMany(MovieGenre::class, 'movieable');
     }
 
 }

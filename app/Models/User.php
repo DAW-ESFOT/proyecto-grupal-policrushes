@@ -132,13 +132,13 @@ class User extends Authenticatable implements JWTSubject
      * Get all of the music genres for the user.
      */
     public function musicGenres() {
-        return $this->morphToMany(Musicable::class, 'musicable');
+        return $this->morphToMany(MusicGenre::class, 'musicable');
     }
 
     /**
      * Get all of movie genres for the user.
      */
     public function movieGenres() {
-        return $this->morphToMany(Movieable::class, 'movieable');
+        return $this->morphToMany(MovieGenre::class, 'movieable');
     }
 }
