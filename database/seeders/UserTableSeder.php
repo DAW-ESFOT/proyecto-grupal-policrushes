@@ -7,7 +7,6 @@ use Illuminate\Database\Seeder;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use \Faker\Factory;
-use Illuminate\Support\Facades\DB;
 
 class UserTableSeder extends Seeder {
     /**
@@ -44,6 +43,9 @@ class UserTableSeder extends Seeder {
             ]);
 
             $user_id = $user->id;
+
+            //attach music genres
+
             $user->musicGenres()->detach(["{$user_id}_1", "{$user_id}_2", "{$user_id}_3"]);
             $user->musicGenres()->attach([
                 1 => [
@@ -64,6 +66,33 @@ class UserTableSeder extends Seeder {
                     "user_id"        => $user->id,
                     "musicable_id"   => "{$user->id}_3",
                     "music_genre_id" => 3,
+                    "created_at"     => Carbon::now(),
+                    "updated_at"     => Carbon::now()
+                ]
+            ]);
+
+            //attach movie genres
+
+            $user->movieGenres()->detach(["{$user_id}_1", "{$user_id}_2", "{$user_id}_3"]);
+            $user->movieGenres()->attach([
+                1 => [
+                    "user_id"        => $user->id,
+                    "movieable_id"   => "{$user->id}_1",
+                    "movie_genre_id" => 1,
+                    "created_at"     => Carbon::now(),
+                    "updated_at"     => Carbon::now()
+                ],
+                2 => [
+                    "user_id"        => $user->id,
+                    "movieable_id"   => "{$user->id}_2",
+                    "movie_genre_id" => 2,
+                    "created_at"     => Carbon::now(),
+                    "updated_at"     => Carbon::now()
+                ],
+                3 => [
+                    "user_id"        => $user->id,
+                    "movieable_id"   => "{$user->id}_3",
+                    "movie_genre_id" => 3,
                     "created_at"     => Carbon::now(),
                     "updated_at"     => Carbon::now()
                 ]
