@@ -30,6 +30,7 @@ Route::group(['middleware' => ['jwt.verify']], function () {
     Route::post('user/pick', 'App\Http\Controllers\UserController@pick');
     Route::get('user/compatibles', 'App\Http\Controllers\UserController@getCompatibles');
     Route::post('user/uploadphoto', 'App\Http\Controllers\UserController@uploadPhoto');
+    Route::get('user/image', 'App\Http\Controllers\UserController@image');
 
     //Movie Genders
     Route::get('movie-genders', 'App\Http\Controllers\MovieGenderController@index');

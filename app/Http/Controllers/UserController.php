@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
@@ -30,11 +29,9 @@ class UserController extends Controller {
 
 
     public function image(User $user) {
-        $path        = Storage::url($user->image);
-        $public_path = public_path($path);
-        return response()->download($public_path, $user->name);
-    }
 
+        return response()->download(Auth::user()->imagePath(), $user->name);
+    }
 
     public function uploadPhoto(Request $request) {
 
@@ -61,12 +58,15 @@ class UserController extends Controller {
             'preferred_gender' => 'required|string|min:4|max:6',
             'gender'           => 'required|string|min:4|max:6',
             'age'              => 'required|integer',
+            'birthdate'        => 'required',
+            'image'            => 'required|image|dimensions:min_width=200,min_height=200',
         ]);
 
         if ($validator->fails()) {
             return response()->json($validator->errors()->toJson(), 400);
         }
 
+        $path = $request->image->store('public/images');
 
         $user = User::create([
             'name'             => $request->get('name'),
@@ -81,36 +81,19 @@ class UserController extends Controller {
             'max_age'          => $request['max_age'],
             'lat'              => $request['lat'],
             'lng'              => $request['lng'],
+            'image'            => $path,
+            'birthdate'        => $request['birthdate']
         ]);
 
-        //attach music genres
-        $user_id = $user->id;
-        $user->musicGenres()->detach(["{$user_id}_1", "{$user_id}_2", "{$user_id}_3"]);
-        $user->musicGenres()->attach([
-            1 => [
-                "user_id"        => $user->id,
-                "musicable_id"   => "{$user->id}_1",
-                "music_genre_id" => 1,
-                "created_at"     => Carbon::now(),
-                "updated_at"     => Carbon::now()
-            ],
-            2 => [
-                "user_id"        => $user->id,
-                "musicable_id"   => "{$user->id}_2",
-                "music_genre_id" => 2,
-                "created_at"     => Carbon::now(),
-                "updated_at"     => Carbon::now()
-            ],
-            3 => [
-                "user_id"        => $user->id,
-                "musicable_id"   => "{$user->id}_3",
-                "music_genre_id" => 3,
-                "created_at"     => Carbon::now(),
-                "updated_at"     => Carbon::now()
-            ]
-        ]);
+        $musicGenresNames = explode(",", $request["music_genres"]);
+        $movieGenresNames = explode(",", $request["movie_genres"]);
+
+        $user->attachMusicGenres($musicGenresNames);
+        $user->attachMovieGenres($movieGenresNames);
 
         $token = JWTAuth::fromUser($user);
+
+        $user = $user->completeRecord();
 
         return response()->json(compact('user', 'token'), 201);
     }
@@ -120,7 +103,7 @@ class UserController extends Controller {
 
     }
 
-    public function getAuthenticatedUser() {
+    public function getAuthenticatedUser(Request $request) {
         try {
             if (!$user = JWTAuth::parseToken()->authenticate()) {
                 return response()->json(['user_not_found'], 404);
@@ -133,23 +116,7 @@ class UserController extends Controller {
             return response()->json(['token_absent'], $e->getStatusCode());
         }
 
-        $userRecord = Auth::user();
-
-        $musicGenresNames = [];
-
-        foreach ($userRecord->musicGenres as $musicGenre) {
-            $musicGenresNames[] = $musicGenre->name;
-        }
-
-        $movieGenresNames = [];
-
-        foreach ($userRecord->movieGenres as $movieGenre) {
-            $movieGenresNames[] = $movieGenre->name;
-        }
-
-        $userRecord = json_decode(json_encode($userRecord), TRUE);
-        $json       = array_merge($userRecord, ["music_genres" => $musicGenresNames], ["movie_genres" => $movieGenresNames]);
-        return response()->json($json);
+        return response()->json(Auth::user()->completeRecord());
     }
 
     public function show(User $user) {

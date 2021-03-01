@@ -25,13 +25,13 @@ class CreateMusicGenresTable extends Migration
         });
 
         Schema::create('musicables', function (Blueprint $table) {
-            $table->string('musicable_id')->unique();
+            $table->id();
+            $table->unsignedBigInteger('musicable_id')->nullable();
+            $table->foreign('musicable_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('musicable_type');
             $table->timestamps();
             $table->unsignedBigInteger('music_genre_id')->nullable();
             $table->foreign('music_genre_id')->references('id')->on('music_genres')->onDelete('cascade');
-            $table->unsignedBigInteger('user_id')->nullable();
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

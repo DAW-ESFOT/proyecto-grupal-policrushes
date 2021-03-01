@@ -25,13 +25,13 @@ class CreateMovieGenresTable extends Migration
         });
 
         Schema::create('movieables', function (Blueprint $table) {
-            $table->string('movieable_id')->unique();
+            $table->id();
+            $table->unsignedBigInteger('movieable_id')->nullable();
+            $table->foreign('movieable_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('movieable_type');
             $table->timestamps();
             $table->unsignedBigInteger('movie_genre_id')->nullable();
             $table->foreign('movie_genre_id')->references('id')->on('movie_genres')->onDelete('cascade');
-            $table->unsignedBigInteger('user_id')->nullable();
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
