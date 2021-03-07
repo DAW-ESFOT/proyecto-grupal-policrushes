@@ -51,19 +51,25 @@ class UserController extends Controller {
     }
 
     public function register(Request $request) {
+        $messages = [
+            "email.unique" => "Ya existe un usuario registrado con ese correo.",
+            "lat.required" => "Debes habilitar el acceso a tu ubicación",
+            "lat.numeric" => "Debes habilitar el acceso a tu ubicación"
+        ];
         $validator = Validator::make($request->all(), [
             'name'             => 'required|string|max:255',
             'email'            => 'required|string|email|max:255|unique:users',
             'password'         => 'required|string|min:6|confirmed',
             'preferred_gender' => 'required|string|min:4|max:6',
             'gender'           => 'required|string|min:4|max:6',
-            'age'              => 'required|integer',
-            'birthdate'        => 'required',
+            'birthdate'        => 'required|date',
             'image'            => 'required|image|dimensions:min_width=200,min_height=200',
-        ]);
+            'lat'              => 'required|numeric',
+        ],$messages);
 
         if ($validator->fails()) {
-            return response()->json($validator->errors()->toJson(), 400);
+            $messages = $validator->messages();
+            return response()->json(compact('messages'), 409);
         }
 
         $path = $request->image->store('public/images');
@@ -73,7 +79,6 @@ class UserController extends Controller {
             'email'            => $request->get('email'),
             'password'         => Hash::make($request->get('password')),
             'gender'           => $request['gender'],
-            'age'              => $request['age'],
             'description'      => $request['description'],
             'preferred_gender' => $request['preferred_gender'],
             'preferred_pet'    => $request['preferred_pet'],
