@@ -24,7 +24,10 @@ class UserController extends Controller {
         } catch (JWTException $e) {
             return response()->json(['error' => 'could_not_create_token'], 500);
         }
-        return response()->json(compact('token'));
+
+        $user = Auth::user()->completeRecord();
+
+        return response()->json(compact('user'));
     }
 
 
@@ -96,11 +99,19 @@ class UserController extends Controller {
         $user->attachMusicGenres($musicGenresNames);
         $user->attachMovieGenres($movieGenresNames);
 
-        $token = JWTAuth::fromUser($user);
+        //authentication attempt
+        $credentials = $request->only('email', 'password');
+        try {
+            if (!$token = JWTAuth::attempt($credentials)) {
+                return response()->json(['error' => 'invalid_credentials'], 400);
+            }
+        } catch (JWTException $e) {
+            return response()->json(['error' => 'could_not_create_token'], 500);
+        }
 
         $user = $user->completeRecord();
 
-        return response()->json(compact('user', 'token'), 201);
+        return response()->json(compact('user'), 201);
     }
 
 
@@ -239,5 +250,21 @@ class UserController extends Controller {
                 }
             });
         return response()->json($compatibles, 201);
+    }
+
+    public function activeSession() {
+
+        if (Auth::check()) {
+            $user = Auth::user()->completeRecord();
+            return response()->json(compact('user'), 200);
+        }
+        else {
+            return response()->json(["message" => "active_session_not_found"], 404);
+        }
+    }
+
+    public function logout(){
+        auth()->logout(true);
+        response()->json(["message" => "logged_out"], 200);
     }
 }
