@@ -18,11 +18,15 @@ class UserController extends Controller {
     public function authenticate(Request $request) {
         $credentials = $request->only('email', 'password');
         try {
+            $exists = DB::table('users')->where('email',$request['email'])->exists();
+            if(!$exists){
+                return response()->json(['message' => 'not_registered'], 400);
+            }
             if (!$token = JWTAuth::attempt($credentials)) {
-                return response()->json(['error' => 'invalid_credentials'], 400);
+                return response()->json(['message' => 'invalid_credentials'], 400);
             }
         } catch (JWTException $e) {
-            return response()->json(['error' => 'could_not_create_token'], 500);
+            return response()->json(['message' => 'could_not_create_token'], 500);
         }
 
         $user = Auth::user()->completeRecord();
@@ -103,10 +107,10 @@ class UserController extends Controller {
         $credentials = $request->only('email', 'password');
         try {
             if (!$token = JWTAuth::attempt($credentials)) {
-                return response()->json(['error' => 'invalid_credentials'], 400);
+                return response()->json(['message' => 'invalid_credentials'], 400);
             }
         } catch (JWTException $e) {
-            return response()->json(['error' => 'could_not_create_token'], 500);
+            return response()->json(['message' => 'could_not_create_token'], 500);
         }
 
         $user = $user->completeRecord();
@@ -121,6 +125,15 @@ class UserController extends Controller {
 
     public function getAuthenticatedUser(Request $request) {
         try {
+
+            $exists = DB::table('users')->where('email',$request['email'])->exists();
+            if(!$exists){
+                return response()->json(['message' => 'not_registered'], 400);
+            }
+            if(!$exists){
+                return response()->json(['message' => 'not_registered'], 400);
+            }
+
             if (!$user = JWTAuth::parseToken()->authenticate()) {
                 return response()->json(['user_not_found'], 404);
             }
