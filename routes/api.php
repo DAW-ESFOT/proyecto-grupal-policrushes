@@ -27,6 +27,9 @@ Route::post('login', 'App\Http\Controllers\UserController@authenticate');
 //Logout
 Route::post('logout', 'App\Http\Controllers\UserController@logout');
 
+//Check credentials
+Route::post('check', 'App\Http\Controllers\UserController@checkCredentials');
+
 Route::group(['middleware' => ['jwt.verify']], function () {
     Route::get('user', 'App\Http\Controllers\UserController@getAuthenticatedUser');
     Route::get('user/matches', 'App\Http\Controllers\UserController@matches');

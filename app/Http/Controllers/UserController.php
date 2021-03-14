@@ -15,6 +15,14 @@ use Carbon\Carbon;
 
 class UserController extends Controller {
 
+    public function checkCredentials(Request $request){
+        $exists = DB::table('users')->where('email',$request['email'])->exists();
+        if($exists){
+            return response()->json(['message' => 'already_registered'], 400);
+        }
+        return response()->json(['status' => 'success'], 200);
+    }
+
     public function authenticate(Request $request) {
         $credentials = $request->only('email', 'password');
         try {
