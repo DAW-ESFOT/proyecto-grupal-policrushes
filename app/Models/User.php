@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Storage;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordInterface;
+use JWTAuth;
 
 class User extends Authenticatable implements JWTSubject, CanResetPasswordInterface
 {
@@ -212,7 +213,8 @@ class User extends Authenticatable implements JWTSubject, CanResetPasswordInterf
         return array_merge($this->toArray(), [
             "music_genres" => $this->musicGenresNames(),
             "movie_genres" => $this->movieGenresNames(),
-            "imageUrl"     => $this->imageUrl()
+            "imageUrl"     => $this->imageUrl(),
+            "token" => JWTAuth::fromUser($this)
         ]);
     }
 

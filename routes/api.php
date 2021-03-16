@@ -71,6 +71,11 @@ Route::post('/reset-password', function (Request $request) {
 });
 
 
+//Logout
+Route::post('logout', 'App\Http\Controllers\UserController@logout');
+
+//Check credentials
+Route::post('check', 'App\Http\Controllers\UserController@checkCredentials');
 
 Route::group(['middleware' => ['jwt.verify']], function () {
     Route::get('user', 'App\Http\Controllers\UserController@getAuthenticatedUser');
@@ -79,6 +84,7 @@ Route::group(['middleware' => ['jwt.verify']], function () {
     Route::get('user/compatibles', 'App\Http\Controllers\UserController@getCompatibles');
     Route::post('user/uploadphoto', 'App\Http\Controllers\UserController@uploadPhoto');
     Route::get('user/image', 'App\Http\Controllers\UserController@image');
+    Route::get('session', 'App\Http\Controllers\UserController@activeSession');
 
     //Movie Genders
     Route::get('movie-genders', 'App\Http\Controllers\MovieGenderController@index');
