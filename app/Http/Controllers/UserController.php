@@ -78,7 +78,6 @@ class UserController extends Controller {
             'preferred_gender' => 'required|string|min:4|max:6',
             'gender'           => 'required|string|min:4|max:6',
             'birthdate'        => 'required|date',
-            'image'            => 'required|image|dimensions:min_width=200,min_height=200',
             'lat'              => 'required|numeric',
         ],$messages);
 
