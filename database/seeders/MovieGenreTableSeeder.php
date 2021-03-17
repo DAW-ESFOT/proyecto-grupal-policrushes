@@ -24,7 +24,6 @@ class MovieGenreTableSeeder extends Seeder {
         MovieGenre::truncate();
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
-        $faker = \Faker\Factory::create();
 
         foreach ($genres as &$genre) {
             MovieGenre::create(['name' => $genre,]);

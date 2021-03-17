@@ -27,7 +27,6 @@ class MusicGenreTableSeeder extends Seeder
         MusicGenre::truncate();
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
-        $faker = \Faker\Factory::create();
 
         foreach ($genres as &$genre) {
             MusicGenre::create(['name' => $genre,]);
